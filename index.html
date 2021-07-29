@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/build/three.min.js"></script>
+</head>
+
+<body>
+  <div class="text alpha">1</div>
+  <div class="text beta">2</div>
+  <div class="text garma">3</div>
+</body>
+<script>
+
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    1, 1000
+  );
+
+  var renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  var geometry = new THREE.BoxGeometry(1, 1, 1);
+  var material = new THREE.MeshStandardMaterial({ color: 0xDF334B })
+  var cube = new THREE.Mesh(geometry, material);
+  var spotLight = new THREE.SpotLight(0xffffff, 1, 200)
+  spotLight.position.set(0, 1, 4);
+  scene.add(spotLight)
+  scene.add(cube);
+
+  camera.position.z = 3;
+
+  var render = function () {
+    requestAnimationFrame(render);
+    // cube.rotation.x += 0.01;
+    // cube.rotation.y += 0.01;
+    renderer.render(scene, camera);
+    window.addEventListener('deviceorientation', capture_orientation, false)
+  }
+  render();
+
+  function capture_orientation(event) {
+    var alpha = event.alpha;
+    var beta = event.beta;
+    var gamma = event.gamma;
+    cube.rotation.x = beta / 100
+    cube.rotation.y = gamma / 100
+  }
+
+</script>
+
+</html>
